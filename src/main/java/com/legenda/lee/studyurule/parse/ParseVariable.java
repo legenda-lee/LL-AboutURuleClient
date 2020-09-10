@@ -1,7 +1,7 @@
 package com.legenda.lee.studyurule.parse;
 
 import com.bstek.urule.ClassUtils;
-import com.legenda.lee.studyurule.controller.variablelibrary3.DeskCheckXContext;
+import com.legenda.lee.studyurule.controller.version1.DrugInfoOutput;
 
 import java.io.File;
 
@@ -13,7 +13,7 @@ import java.io.File;
 public class ParseVariable {
 
     public static void main(String[] args) {
-        File file=new File("/Users/legendalee/Desktop/DeskCheckXContext.xml");
-        ClassUtils.classToXml(DeskCheckXContext.class, file);
+        File file=new File("/Users/legendalee/Desktop/DrugInfoOutput.xml");
+        ClassUtils.classToXml(DrugInfoOutput.class, file);
     }
 }

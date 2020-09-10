@@ -15,6 +15,9 @@ import com.legenda.lee.studyurule.controller.variablelibrary2.DeskCountResult;
 import com.legenda.lee.studyurule.controller.variablelibrary3.Bad;
 import com.legenda.lee.studyurule.controller.variablelibrary3.DeskCheckXContext;
 import com.legenda.lee.studyurule.controller.variablelibrary3.DeskXResult;
+import com.legenda.lee.studyurule.controller.version1.DrugInfoInput;
+import com.legenda.lee.studyurule.controller.version1.DrugMatchContext;
+import com.legenda.lee.studyurule.controller.version1.DrugMatchInput;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -346,6 +349,44 @@ public class TestController {
         return null;
     }
 
+    @RequestMapping("/drugmatch")
+    public DrugMatchContext drugmatch() throws IOException {
+        KnowledgeService knowledgeService = (KnowledgeService) Utils.getApplicationContext().getBean(KnowledgeService.BEAN_ID);
+        KnowledgePackage knowledgePackage = knowledgeService.getKnowledge("药品数据匹配事件/pkg1");
+        KnowledgeSession session = KnowledgeSessionFactory.newKnowledgeSession(knowledgePackage);
+
+
+
+
+        List<DrugInfoInput> drugInfoInputs = new ArrayList<>();
+        DrugInfoInput drugInfoInput = new DrugInfoInput();
+        drugInfoInput.setApprovalNumber("GY001");
+        drugInfoInput.setBarcode("BarCode0001");
+
+        DrugInfoInput drugInfoInput1 = new DrugInfoInput();
+        drugInfoInput1.setApprovalNumber("GY002");
+
+        drugInfoInputs.add(drugInfoInput);
+        drugInfoInputs.add(drugInfoInput1);
+
+        DrugMatchInput drugMatchInput = new DrugMatchInput();
+        drugMatchInput.setDrugInfoInputList(drugInfoInputs);
+
+
+        DrugMatchContext ruleContext = new DrugMatchContext();
+        ruleContext.setDrugMatchInput(drugMatchInput);
+
+        session.insert(ruleContext);
+
+        // startProcess的参数ID并不是知识包ID，而是流程的ID，所以后面一定要注意。
+        session.startProcess("flow1");
+        session.writeLogFile();
+
+        System.out.println(ruleContext);
+
+        return ruleContext;
+
+    }
 
 
 }
